@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="br_pos_view_account_journal_form" model="ir.ui.view">
+        <field name="name">br_pos_account_journal.form.view</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="payment_mode" attrs="{'invisible': [('journal_user', '=', False)],
+                    'required': [('journal_user','=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

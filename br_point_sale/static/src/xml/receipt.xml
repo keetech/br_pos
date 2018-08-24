@@ -1,0 +1,29 @@
+<templates>
+    <template id="danfce" xml:space="preserve">
+        <t t-name="XmlReceipt" t-extend=“XmlReceipt”>
+            <t t-jquery=“receipt” t-operation=“replace”>
+                <receipt align='center' width='40' value-thousands-separator='' >
+                    <div class="page">
+                        <!-- HEADER -->
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <img t-att-src='receipt.company.logo' width="82"/>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="receipt.company.legal_name"/><br/>
+                                    <span>CNPJ: <t t-raw="receipt.company_id.cnpj_cpf"/> I.E.: <t t-raw="receipt.company.inscr_est"/></span><br/>
+                                    <span><t t-raw="receipt.company.street"/> Nº <t t-raw="receipt.company.number"/></span><br/>
+                                    <span><t t-raw="receipt.company.street2"/></span><br/>
+                                    <span><t t-raw="receipt.company.district"/>, <t t-raw="receipt.company.city_id.name"/></span>
+                                    <span>, <t t-raw="receipt.company.state_id.code"/></span><br/>
+                                    <span>CEP: <t t-raw="receipt.company.zip"/> <t t-raw="receipt.company.phone"/></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </receipt>
+            </t>
+        </t>
+    </template>
+</templates>
