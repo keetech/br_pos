@@ -253,7 +253,6 @@ class PosOrder(models.Model):
             'metodo_pagamento': pos.statement_ids[0].journal_id.payment_mode.payment_method,
             'ambiente': 'homologacao' if pos.company_id.tipo_ambiente == '2' else 'producao',
         }
-        #import pudb;pu.db
         #amount_all = pos._compute_amount_all()
         valor_pago = 0
         troco = 0
@@ -288,8 +287,6 @@ class PosOrder(models.Model):
         vals['valor_final'] = pos.amount_paid - pos.amount_tax
         #vals['valor_bc_icms'] = base_icms
         vals['valor_bc_icmsst'] = 0
-
-        #import pudb;pu.db
 
         return vals
 
