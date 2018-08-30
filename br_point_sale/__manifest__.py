@@ -30,6 +30,7 @@
         'views/br_pos_session.xml',
         'reports/danfce_report.xml',
         'reports/close_session.xml',
+        'security/ir.model.access.csv',
     ],
 
     'qweb': [
