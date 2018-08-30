@@ -41,6 +41,7 @@ class ReportSaleDetails(models.AbstractModel):
 
     @api.model
     def get_danfce(self, pos_reference=False):
+        import pudb;pu.db
         docs = self.env['invoice.eletronic'].search([('pos_order_reference', '=', pos_reference)])
 
         #return self.env.ref('br_nfe.report_br_nfe_danfe').report_action(docs[0])

@@ -1,0 +1,125 @@
+<odoo>
+    <data>
+        <record id="br_point_sale.pos_session_form" model="ir.ui.view">
+            <field name="name">br_point_sale.pos_session_form</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@icon='fa-level-down']" position="replace">
+                    <button class="oe_stat_button" name="%(point_of_sale.action_pos_box_in)d" type="action" icon="fa-level-down" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Lançar</span>
+                            <span class="o_stat_text">Suprimento</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@icon='fa-level-up']" position="replace">
+                    <button class="oe_stat_button" name="%(point_of_sale.action_pos_box_out)d" type="action" icon="fa-level-up" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Efetuar</span>
+                            <span class="o_stat_text">Saque/Sangria</span>
+                        </div>
+                    </button>
+                    <button class="oe_stat_button" name="%(point_of_sale.action_pos_box_out)d" type="action" icon="fa-dollar" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['closing_control'])]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Fechar Caixa</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='open_cashbox'][2]" position="replace"/>
+                <!--
+                    <button name="open_cashbox" class="oe_stat_button" attrs="{'invisible':['|', ('cash_control', '=', False), ('state', '!=', 'opening_control')]}" icon="fa-money" type="object" context="{'balance': 'start'}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Definir Saldo</span>
+                            <span class="o_stat_text">De Abertura</span>
+                        </div>
+                    </button>
+                </xpath>
+                -->
+                <xpath expr="//button[@name='open_cashbox']" position="replace"/>
+                <!--
+                    <button name="open_cashbox" class="oe_stat_button" attrs="{'invisible':['|', '|', ('cash_control', '=', False), ('state', '=', 'opening_control'), ('state', '=', 'closed')]}" icon="fa-money" type="object" context="{'balance': 'end'}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Definir Saldo</span>
+                            <span class="o_stat_text">De Fechamento</span>
+                        </div>
+                    </button>
+                </xpath>
+                -->
+                <xpath expr="//sheet/group/div[2]" position="replace">
+                    <group class="oe_subtotal_footer oe_right">
+                        <label for="cash_register_balance_start" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="Saldo Inicial" class="oe_force_bold oe_opening_total"/>
+                        <field name="cash_register_balance_start" nolabel="1" readonly="1" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <label for="total_cash_move_in" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="+ Suprimentos" class="oe_force_bold oe_opening_total"/>
+                        <field name="total_cash_move_in" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <label for="total_cash_move_out" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="- Sangrias" class="oe_force_bold oe_opening_total"/>
+                        <field name="total_cash_move_out" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <label for="total_cash_move_sales" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="= Vendas em Espécie" class="oe_force_bold oe_opening_total"/>
+                        <field name="total_cash_move_sales" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <label for="total_cash_move_closing" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="- Fechamento em Espécie" class="oe_force_bold oe_opening_total"/>
+                        <field name="total_cash_move_closing" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <label for="total_cash_move_balance" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="= Diferença" class="oe_force_bold oe_opening_total"/>
+                        <field name="total_cash_move_balance" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//sheet/group/div" position="replace"/>
+                <xpath expr="//separator" position="replace"/>
+                <!-- <separator string="Summary by Payment Methods" attrs="{'invisible' : [('state', '=', 'opening_control')]}"/> -->
+                <xpath expr="//field[@name='statement_ids']" position="replace">
+                    <notebook>
+                        <page string="Vendas">
+                            <field name="order_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="user_id"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="amount_paid" string="Valor"/>
+                                    <field name="amount_return" invisible="1"/>
+                                    <field name="amount_total" invisible="1"/>
+                                    <field name="date_order"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <field name="qty_orders"/>
+                                <field name="amount_total_orders"/>
+                            </group>
+                        </page>
+                        <page string="Resumo Métodos de Pagamento">
+                            <field name="statement_ids" attrs="{'invisible' : [('state', '=', 'opening_control')]}">
+                                <tree string="Statements">
+                                    <field name="name"/>
+                                    <field name="journal_id"/>
+                                    <field name="balance_start"/>
+                                    <field name="total_entry_encoding"/>
+                                    <field name="balance_end_real"/>
+                                    <field name="difference"/>
+                                    <field name="currency_id" groups="base.group_multi_currency"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Histórico de Movimentações">
+                            <field name="cash_move_ids">
+                                <tree>
+                                    <field name="user_id" string="Usuário"/>
+                                    <field name="reference" string="Motivo"/>
+                                    <field name="amount" string="Valor"/>
+                                    <field name="type" string="Depósito/Retirada"/>
+                                    <field name="create_date" string="Data e Hora"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <label for="total_cash_move_out" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="Total de Retiradas/Sangrias ( - )" class="oe_force_bold oe_opening_total"/>
+                                <field name="total_cash_move_out" nolabel="1" readonly="1" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <label for="total_cash_move_in" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="Total de Entradas/Suprimentos ( + )" class="oe_force_bold oe_opening_total"/>
+                                <field name="total_cash_move_in" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <label for="total_cash_move_balance" attrs="{'invisible' : [('state', '=', 'opening_control')]}" string="Saldo Suprimentos/Sangrias ( = )" class="oe_force_bold oe_opening_total"/>
+                                <field name="total_cash_move_balance" nolabel="1" attrs="{'invisible' : [('state', '=', 'opening_control')]}" class="oe_bold oe_pos_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

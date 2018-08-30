@@ -250,14 +250,19 @@ class PosOrder(models.Model):
             'fiscal_position_id': pos.fiscal_position_id.id,
             'ind_final': pos.fiscal_position_id.ind_final,
             'ind_pres': pos.fiscal_position_id.ind_pres,
-            'metodo_pagamento': pos.statement_ids[0].journal_id.payment_mode.payment_method,
+            #'metodo_pagamento': pos.statement_ids[0].journal_id.payment_mode.payment_method,
             'ambiente': 'homologacao' if pos.company_id.tipo_ambiente == '2' else 'producao',
         }
-        #amount_all = pos._compute_amount_all()
+
+
         valor_pago = 0
         troco = 0
+        payments = []
         for payment in pos.statement_ids:
             if payment.amount > 0:
+                payments.append((0, 0,
+                                {'metodo_pagamento': payment.journal_id.payment_mode.payment_method,
+                                 'valor': payment.amount}))
                 valor_pago += payment.amount
             if payment.amount < 0:
                 troco += payment.amount
@@ -271,6 +276,7 @@ class PosOrder(models.Model):
             base_pis += pos_line.base_pis
             base_cofins += pos_line.base_cofins
 
+        vals['payment_ids'] = payments
         vals['eletronic_item_ids'] = eletronic_items
         vals['valor_bc_icms'] = pos.amount_paid - pos.amount_tax
         vals['fatura_liquido'] = pos.amount_paid - pos.amount_tax

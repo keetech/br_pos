@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_br_fiscal_print" model="report.paperformat">
+            <field name="name">Formato Imp Fiscal</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="orientation">Portrait</field>
+            <field name="page_width">80</field>
+            <field name="page_height">200</field>
+            <field name="margin_top">0.2</field>
+            <field name="margin_left">0.2</field>
+            <field name="margin_right">0.2</field>
+            <field name="margin_bottom">0.2</field>
+        </record>
+
+        <report
+            id="br_pos_session_close"
+            model="pos.session"
+            string="Fechamento de Caixa"
+            report_type="qweb-pdf"
+            paperformat="paperformat_br_fiscal_print"
+            name="br_point_sale.br_pos_session_close_report"
+            file="br_point_sale.br_pos_session_close_report"
+        />
+
+        <template id="br_pos_session_close_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                    <!-- CABEÇALHO DO RELATÓRIO -->
+                        <table width="100%">
+                            <tr style="text-align:center; font-weight:bold;">
+                                <td colspan="2">
+                                    <span t-field="o.config_id.company_id.legal_name"/><br/>
+                                    <span>CNPJ: <t t-raw="o.config_id.company_id.cnpj_cpf"/> I.E.: <t t-raw="o.config_id.company_id.inscr_est"/></span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="2">--------------------------------------------------------------------------------</td>
+                            </tr>
+                            <br/>
+                        </table>
+
+                        <!-- DETALHES -->
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>SESSÃO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>USUÁRIO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.user_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>DATA DE INÍCIO DA SESSÃO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.start_at"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>DATA DO FIM DA SESSÃO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.stop_at"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="2">--------------------------------------------------------------------------------</td>
+                            </tr>
+                            <br/>
+                        </table>
+                        <!-- HISTÓRICO SUPRIMENTOS/SANGRIAS
+                        <table width="100%">
+                            <thead>
+                                <th>Motivo</th>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                            </thead>
+                            <t t-foreach="o.cash_move_ids" t-as="m">
+                                <tr>
+                                    <td><t t-esc="m.reference"/></td>
+                                    <td>
+                                        <span t-if="m.type == 'in'">Suprimento</span>
+                                        <span t-elif="m.type == 'out'">Sangria</span>
+                                        <span t-elif="m.type == 'closing'">Fechamento</span>
+                                    </td>
+                                    <td><t t-esc="m.amount"/></td>
+                                </tr>
+                            </t>
+                        </table>
+                        -->
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">RESUMO MOVIMENTAÇÕES EM ESPÉCIE</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">SALDO INICIAL:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    R$ <t t-raw="o.cash_register_balance_start"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">SUPRIMENTOS:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                   R$ <t t-raw="o.total_cash_move_in"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">SANGRIAS:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                   R$ <t t-raw="o.total_cash_move_out"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">TOTAL VENDAS EM ESPÉCIE:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    R$ <t t-raw="o.total_cash_move_sales"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">FECHAMENTO EM ESPÉCIE:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    R$ <t t-raw="o.total_cash_move_closing"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">DIFERENÇA:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    R$ <t t-raw="o.total_cash_move_balance"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">OUTRAS FORMAS DE PAGAMENTO</td>
+                            </tr>
+                        </table>
+                        <!-- DETALHES -->
+                        <table width="100%">
+                            <thead>
+                                <th colspan="2">Método de Pagamento</th>
+                                <th colspan="1">Valor</th>
+                            </thead>
+                            <t t-foreach="o.statement_ids" t-as="s">
+                                <t t-if="s.journal_id.type != 'cash'">
+                                    <tr>
+                                        <td colspan="2"><t t-raw="s.journal_id.name"/></td>
+                                        <td style="text-align:left;" colspan="1">R$ <t t-raw="s.balance_end"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                            </tr>
+                        </table>
+                        <!-- RESUMO VENDAS -->
+                        <table width="100%">
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">NÚMERO DE VENDAS:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    <t t-raw="o.qty_orders"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span style="text-align:left;font-weight:bold;">VALOR:</span>
+                                </td>
+                                <td style="text-align:left;">
+                                    <t t-raw="o.amount_total_orders"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3"><t t-raw="o.user_id.name"/></td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">FISCAL CAIXA</td>
+                            </tr>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

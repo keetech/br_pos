@@ -27,7 +27,9 @@
         'views/br_account_journal.xml',
         'views/pos_order.xml',
         'views/br_pos_templates.xml',
+        'views/br_pos_session.xml',
         'reports/danfce_report.xml',
+        'reports/close_session.xml',
     ],
 
     'qweb': [

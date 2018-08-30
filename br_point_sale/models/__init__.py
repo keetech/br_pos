@@ -6,3 +6,4 @@ from . import invoice_eletronic
 from . import br_account_journal
 from . import pos_order
 from . import report_sale_details
+from . import br_pos_session
