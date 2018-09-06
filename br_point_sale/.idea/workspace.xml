@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1ebbd0e-dced-4a83-8e29-f9aafcbbe229" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/br_pos_session.xml" beforeDir="false" afterPath="$PROJECT_DIR$/views/br_pos_session.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/close_session.xml" beforeDir="false" afterPath="$PROJECT_DIR$/reports/close_session.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +100,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/br_pos_session.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
@@ -129,11 +128,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reports/close_session.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4515">
-              <caret line="301" column="38" selection-start-line="301" selection-start-column="38" selection-end-line="301" selection-end-column="38" />
+            <state relative-caret-position="394">
+              <caret line="242" column="89" lean-forward="true" selection-start-line="242" selection-start-column="89" selection-end-line="242" selection-end-column="89" />
             </state>
           </provider>
         </entry>
@@ -216,8 +215,8 @@
         <option value="$PROJECT_DIR$/__manifest__.py" />
         <option value="$PROJECT_DIR$/security/ir.model.access.csv" />
         <option value="$PROJECT_DIR$/models/br_pos_session.py" />
-        <option value="$PROJECT_DIR$/reports/close_session.xml" />
         <option value="$PROJECT_DIR$/views/br_pos_session.xml" />
+        <option value="$PROJECT_DIR$/reports/close_session.xml" />
       </list>
     </option>
   </component>
@@ -430,13 +429,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reports/close_session.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4515">
-          <caret line="301" column="38" selection-start-line="301" selection-start-column="38" selection-end-line="301" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/br_pos_session.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -455,6 +447,13 @@
             <marker date="1536157072370" expanded="true" signature="3187:3188" ph="..." />
             <marker date="1536157072370" expanded="true" signature="3279:3856" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reports/close_session.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="242" column="89" lean-forward="true" selection-start-line="242" selection-start-column="89" selection-end-line="242" selection-end-column="89" />
         </state>
       </provider>
     </entry>
