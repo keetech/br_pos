@@ -240,7 +240,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:center;" colspan="2">----------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="2">---------------------------------------------------------</td>
                             </tr>
                             <br/>
                         </table>
@@ -298,9 +298,6 @@
                                 <td style="text-align:right;">
                                     <t t-raw="o.amount"/>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;" colspan="2">----------------------------------------------------------------</td>
                             </tr>
                             <br/>
                         </table>
