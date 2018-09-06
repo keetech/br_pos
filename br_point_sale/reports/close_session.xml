@@ -7,7 +7,7 @@
             <field name="default" eval="True"/>
             <field name="format">custom</field>
             <field name="orientation">Portrait</field>
-            <field name="page_width">80</field>
+            <field name="page_width">72</field>
             <field name="page_height">200</field>
             <field name="margin_top">0.2</field>
             <field name="margin_left">0.2</field>
@@ -38,7 +38,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:center;" colspan="2">--------------------------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="2">------------------------------------------------------------------------</td>
                             </tr>
                             <br/>
                         </table>
@@ -78,7 +78,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:center;" colspan="2">--------------------------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="2">------------------------------------------------------------------------</td>
                             </tr>
                             <br/>
                         </table>
@@ -155,7 +155,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------------------</td>
                             </tr>
                             <tr>
                                 <td style="text-align:center;" colspan="3">OUTRAS FORMAS DE PAGAMENTO</td>
@@ -176,7 +176,7 @@
                                 </t>
                             </t>
                             <tr>
-                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------------------</td>
                             </tr>
                         </table>
                         <!-- RESUMO VENDAS -->
@@ -198,7 +198,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:center;" colspan="3">--------------------------------------------------------------------------------</td>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------------------</td>
                             </tr>
                         </table>
                         <br/><br/>
@@ -223,5 +223,131 @@
                 </t>
             </t>
         </template>
+
+        <record id="paperformat_br_pos_move" model="report.paperformat">
+            <field name="name">Formato Imp Fiscal</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="orientation">Portrait</field>
+            <field name="page_width">72</field>
+            <field name="page_height">100</field>
+            <field name="margin_top">0.2</field>
+            <field name="margin_left">0.2</field>
+            <field name="margin_right">0.2</field>
+            <field name="margin_bottom">0.2</field>
+        </record>
+
+        <report
+            id="br_pos_session_move_cash"
+            model="pos.session.cash.move"
+            string="Movimento de Caixa"
+            report_type="qweb-pdf"
+            paperformat="paperformat_br_pos_move"
+            name="br_point_sale.br_pos_session_move_report"
+            file="br_point_sale.br_pos_session_move_report"
+        />
+
+        <template id="br_pos_session_move_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                    <!-- CABEÇALHO DO RELATÓRIO -->
+                        <table width="100%">
+                            <tr style="text-align:center; font-weight:bold;">
+                                <td colspan="2">
+                                    <span t-field="o.pos_session_id.config_id.company_id.legal_name"/><br/>
+                                    <span>CNPJ: <t t-raw="o.pos_session_id.config_id.company_id.cnpj_cpf"/> I.E.: <t t-raw="o.pos_session_id.config_id.company_id.inscr_est"/></span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="2">------------------------------------------------------------------------</td>
+                            </tr>
+                            <br/>
+                        </table>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;font-weight:bold;">
+                                    <t t-if="o.type == 'in'">
+                                        <span>SUPRIMENTO</span>
+                                    </t>
+                                    <t t-if="o.type == 'out'">
+                                        <span>SANGRIA</span>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- DETALHES -->
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>SESSÃO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.pos_session_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>OPERADOR DA SESSÃO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.pos_session_id.user_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>DATA/HORA DO MOVIMENTO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-field="o.create_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>MOTIVO:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.reference"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;font-weight:bold;">
+                                    <span>VALOR:</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-raw="o.amount"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="2">------------------------------------------------------------------------</td>
+                            </tr>
+                            <br/>
+                        </table>
+
+                        <br/><br/>
+
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3"><t t-raw="o.user_id.name"/></td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">------------------------------------------------------------</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;" colspan="3">FISCAL CAIXA</td>
+                            </tr>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </template>
+
     </data>
 </odoo>

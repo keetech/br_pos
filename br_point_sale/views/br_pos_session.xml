@@ -101,6 +101,7 @@
                         <page string="Histórico de Movimentações">
                             <field name="cash_move_ids">
                                 <tree>
+                                    <button name="action_print_move" type="object" string="Recibo" icon="fa-barcode"/>
                                     <field name="user_id" string="Usuário"/>
                                     <field name="reference" string="Motivo"/>
                                     <field name="amount" string="Valor"/>

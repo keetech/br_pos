@@ -59,16 +59,10 @@ class PosSessionCashMove(models.Model):
     type = fields.Selection([('out', u'Saque/Sangria'), ('in', u'Depósito'), ('closing', u'Fechamento')],
                             string=u'Tipo de Movimentação')
 
-    '''
-    @api.depends('amount')
-    def _compute_type(self):
-        for record in self:
-            if record.amount < 0:
-                record.type = 'out'
-
-            if record.amount > 0:
-                record.type = 'in'
-    '''
+    @api.multi
+    def action_print_move(self):
+            return self.env.ref(
+                'br_point_sale.br_pos_session_move_cash').report_action(self)
 
 class PosBoxIn(PosBoxIn):
 
@@ -84,7 +78,17 @@ class PosBoxIn(PosBoxIn):
             'reference': self.name,
             'pos_session_id': session_id,
         }
-        cash_move.create(values)
+
+        move = cash_move.create(values)
+
+        try:
+            report_move = self.env['ir.actions.report'].search(
+                [('report_name', '=', 'br_point_sale.br_pos_session_move_report')])
+
+            report_move[0].print_document(record_ids=[move.id])
+
+        except Exception:
+            pass
 
     def _calculate_values_for_statement_line(self, record):
         values = super(PosBoxIn, self)._calculate_values_for_statement_line(record=record)
@@ -110,7 +114,17 @@ class PosBoxOut(PosBoxOut):
             'type': type,
             'pos_session_id': session_id,
         }
-        cash_move.create(values)
+
+        move = cash_move.create(values)
+
+        if type == 'out':
+            try:
+                report_move = self.env['ir.actions.report'].search(
+                    [('report_name', '=', 'br_point_sale.br_pos_session_move_report')])
+
+                report_move[0].print_document(record_ids=[move.id])
+            except Exception:
+                pass
 
     def _calculate_values_for_statement_line(self, record):
         values = super(PosBoxOut, self)._calculate_values_for_statement_line(record=record)
